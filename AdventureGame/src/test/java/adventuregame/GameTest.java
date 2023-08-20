@@ -3,5 +3,47 @@
  */
 package adventuregame;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Set;
+
+import org.junit.jupiter.api.Test;
+import org.reflections.Reflections;
+
+import adventuregame.items.Item;
+import adventuregame.items.Items;
+import adventuregame.quests.MainQuest;
+
 class GameTest {
+    @Test
+    void ensureQuestTitle() {
+        MainQuest quest = new MainQuest();
+        assertEquals(quest.getTitle(), "Main Quest");
+    }
+
+    @Test
+    void ensureItemsRegistered() {
+        for (Items item : Items.values()) {
+            String upperCaseName = item.toString();
+            String properCaseName = upperCaseName.substring(0, 1).toUpperCase() + upperCaseName.substring(1).toLowerCase();
+            try {
+                Class.forName("adventuregame.items." + properCaseName);
+            } catch(Exception e) {
+                fail("Item " + item.toString() + " not found as class");
+            }
+        }
+
+        Reflections reflections = new Reflections("adventuregame.items");
+
+        Set<Class<? extends Item>> classes = reflections.getSubTypesOf(Item.class);
+
+        for (Class<? extends Item> item : classes) {
+            try {
+                Items.valueOf(item.getSimpleName().toUpperCase());
+            } catch (Exception e) {
+                fail("Item " + item.getSimpleName() + " wasn't registered");
+            }
+        }
+    }
 }
