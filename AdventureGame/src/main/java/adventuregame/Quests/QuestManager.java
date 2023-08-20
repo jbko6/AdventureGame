@@ -17,10 +17,12 @@ public class QuestManager {
         ArrayList<Quest> completedQuests = new ArrayList<>();
 
         for (Quest quest : quests) {
-            boolean questComplete = quest.checkProgress(true);
-            if (questComplete) {
-                System.out.println("You completed the quest " + quest.getTitle() + "!");
-                completedQuests.add(quest);
+            if (quest.checkProgress(true)) {
+                boolean questComplete = quest.checkCompletion();
+                if (questComplete) {
+                    System.out.println("You completed the quest " + quest.getTitle() + "!");
+                    completedQuests.add(quest);
+                }
             }
         }
 

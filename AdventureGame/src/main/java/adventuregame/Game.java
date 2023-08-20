@@ -25,10 +25,8 @@ public class Game {
         player.getInventory().addItem(new Milk());
         System.out.println(player.getInventory().toString());
         player.getInventory().useItem(Items.MILK);
-        player.getInventory().useItem(Items.MILK);
         System.out.println(player.getInventory().toString());
         player.getInventory().addItem(new Poison());
-        player.getInventory().useItem(Items.POISON);
 
         questManager.addQuest(new MainQuest());
 
