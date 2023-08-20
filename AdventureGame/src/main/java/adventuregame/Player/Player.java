@@ -1,23 +1,25 @@
-package adventuregame.Player;
+package adventuregame.player;
 
-import adventuregame.Game;
 
 public class Player {
     
     private int health;
     private int xp;
+    private Inventory inventory;
 
-    public Inventory inventory;
-
-
-    public Player(Game game) {
+    public Player() {
         this.health = 20;
         this.xp = 0;
-        this.inventory = new Inventory(game);
+        this.inventory = new Inventory();
+    }
+
+    public void damage(int amount, boolean alertPlayer) {
+        health -= amount;
+        System.out.println("You were damaged for " + amount + " hit points! Your health is now at " + health + " hit points.");
     }
 
     public void damage(int amount) {
-        health -= amount;
+        damage(amount, false);
     }
 
     public int getHealth() {
@@ -26,5 +28,9 @@ public class Player {
 
     public int getXP() {
         return xp;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

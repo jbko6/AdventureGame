@@ -1,39 +1,41 @@
 package adventuregame;
 
-import adventuregame.Items.Items;
-import adventuregame.Items.Milk;
-import adventuregame.Player.Player;
-import adventuregame.Quests.QuestManager;
+import adventuregame.items.Items;
+import adventuregame.items.Milk;
+import adventuregame.items.Poison;
+import adventuregame.player.Player;
+import adventuregame.quests.MainQuest;
+import adventuregame.quests.QuestManager;
 
 public class Game {
-    private Player player;
-    private QuestManager questManager;
+    private static Player player = new Player();
+    private static QuestManager questManager = new QuestManager();
 
-    public Game() {
-        this.player = new Player(this);
-        this.questManager = new QuestManager();
-    }
-
-    public Player getPlayer() {
+    public static Player getPlayer() {
         return player;
     }
 
-    public QuestManager getQuestManager() {
+    public static QuestManager getQuestManager() {
         return questManager;
     }
 
-    public void startGame() {
+    public static void startGame() {
         System.out.println("welcome! test");
-        player.inventory.addItem(new Milk());
-        player.inventory.addItem(new Milk());
-        System.out.println(player.inventory.toString());
-        player.inventory.useItem(Items.MILK);
-        System.out.println(player.inventory.toString());
+        player.getInventory().addItem(new Milk());
+        player.getInventory().addItem(new Milk());
+        System.out.println(player.getInventory().toString());
+        player.getInventory().useItem(Items.MILK);
+        player.getInventory().useItem(Items.MILK);
+        System.out.println(player.getInventory().toString());
+        player.getInventory().addItem(new Poison());
+        player.getInventory().useItem(Items.POISON);
+
+        questManager.addQuest(new MainQuest());
 
         gameLoop();
     }
 
-    private void gameLoop() {
-        
+    private static void gameLoop() {
+        questManager.updateQuests();
     }
 }

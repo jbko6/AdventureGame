@@ -1,6 +1,5 @@
-package adventuregame.Items;
+package adventuregame.items;
 
-import adventuregame.Game;
 
 public abstract class Item {
     protected String name;
@@ -10,5 +9,5 @@ public abstract class Item {
         return name;
     }
 
-    public abstract boolean use(Game game);
+    public abstract boolean use();
 }

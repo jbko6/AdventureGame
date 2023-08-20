@@ -1,15 +1,22 @@
-package adventuregame.Quests.Objectives;
+package adventuregame.quests.objectives;
 
-import adventuregame.Game;
 
 public abstract class Objective {
-    private String name;
-    private String description;
+    protected String name;
+    protected String description;
 
     public Objective(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    abstract boolean isCompleted(Game game);
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public abstract boolean isCompleted();
 }

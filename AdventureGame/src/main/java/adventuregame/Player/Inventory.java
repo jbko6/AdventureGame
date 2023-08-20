@@ -1,20 +1,16 @@
-package adventuregame.Player;
+package adventuregame.player;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-import adventuregame.Game;
-import adventuregame.Items.Item;
-import adventuregame.Items.Items;
+import adventuregame.items.Item;
+import adventuregame.items.Items;
 
 public class Inventory {
     private ListMultimap<Items, Item> items;
 
-    private Game game;
-
-    public Inventory(Game game) {
+    public Inventory() {
         items = ArrayListMultimap.create();
-        this.game = game;
     }
 
     public void addItem(Item item) {
@@ -23,15 +19,23 @@ public class Inventory {
 
     public void useItem(Items item) {
         if (hasItem(item)) {
-            boolean destroysItem = items.get(item).get(0).use(game);
+            boolean destroysItem = getItem(item).use();
             if (destroysItem) {
-                items.remove(item, items.get(item).get(0));
+                items.remove(item, getItem(item));
             }
         }
     }
 
     public boolean hasItem(Items item) {
         return items.containsKey(item);
+    }
+
+    public Item getItem(Items item, int index) {
+        return items.get(item).get(index);
+    }
+
+    public Item getItem(Items item) {
+        return getItem(item, 0);
     }
 
     public String toString() {

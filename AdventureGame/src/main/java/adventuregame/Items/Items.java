@@ -1,5 +1,6 @@
-package adventuregame.Items;
+package adventuregame.items;
 
 public enum Items {
-    MILK
+    MILK,
+    POISON
 }

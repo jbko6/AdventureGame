@@ -1,6 +1,5 @@
-package adventuregame.Items;
+package adventuregame.items;
 
-import adventuregame.Game;
 
 public class Milk extends Item {
     public Milk() {
@@ -9,7 +8,7 @@ public class Milk extends Item {
     }
 
     @Override
-    public boolean use(Game game) {
+    public boolean use() {
         System.out.println("You drank the milk.");
         return true;
     }
