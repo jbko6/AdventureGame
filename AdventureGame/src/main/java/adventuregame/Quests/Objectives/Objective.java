@@ -2,8 +2,8 @@ package adventuregame.quests.objectives;
 
 
 public abstract class Objective {
-    protected String name;
-    protected String description;
+    protected final String name;
+    protected final String description;
 
     public Objective(String name, String description) {
         this.name = name;

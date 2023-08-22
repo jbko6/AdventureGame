@@ -2,6 +2,9 @@ package adventuregame.quests;
 
 import java.util.ArrayList;
 
+import adventuregame.console.ConsoleManager;
+import adventuregame.console.LogType;
+
 public class QuestManager {
     private ArrayList<Quest> quests = new ArrayList<>();
 
@@ -20,7 +23,7 @@ public class QuestManager {
             if (quest.checkProgress(true)) {
                 boolean questComplete = quest.checkCompletion();
                 if (questComplete) {
-                    System.out.println("You completed the quest " + quest.getTitle() + "!");
+                    ConsoleManager.log(LogType.QUEST, "You completed the quest " + quest.getTitle() + "!");
                     completedQuests.add(quest);
                 }
             }

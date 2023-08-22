@@ -2,12 +2,18 @@ package adventuregame.quests;
 
 import java.util.ArrayList;
 
+import adventuregame.console.ConsoleManager;
+import adventuregame.console.LogType;
 import adventuregame.quests.objectives.Objective;
 
 public abstract class Quest {
 
-    protected String title;
-    protected ArrayList<Objective> sequence = new ArrayList<>();
+    protected final String title;
+    protected final ArrayList<Objective> sequence = new ArrayList<>();
+
+    public Quest(String title) {
+        this.title = title;
+    }
 
     public String getTitle() {
         return title;
@@ -31,7 +37,7 @@ public abstract class Quest {
             sequence.remove(currentObjective);
 
             if (alertPlayer) {
-                System.out.println("You completed the quest objective " + currentObjective.getName() + "!");
+                ConsoleManager.log(LogType.QUEST, "You completed the quest objective " + currentObjective.getName() + "!");
             }
 
             checkProgress(true);

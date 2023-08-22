@@ -1,15 +1,16 @@
 package adventuregame.items;
 
+import adventuregame.console.ConsoleManager;
+import adventuregame.console.LogType;
 
 public class Milk extends Item {
     public Milk() {
-        this.name = "Milk";
-        this.description = "A carton of milk. Boring and bland.";
+        super("Milk", "A carton of milk. Boring and bland.");
     }
 
     @Override
     public boolean use() {
-        System.out.println("You drank the milk.");
+        ConsoleManager.log(LogType.ACTION, "You drank the milk.");
         return true;
     }
 }
