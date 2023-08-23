@@ -9,8 +9,13 @@ import adventuregame.locations.Location;
 import adventuregame.player.Player;
 import adventuregame.quests.MainQuest;
 import adventuregame.quests.QuestManager;
+import adventuregame.util.GameState;
+import jcurses.system.InputChar;
+import jcurses.system.Toolkit;
 
 public final class Game {
+    public static GameState gameState = GameState.NULL;
+
     private static Player player = new Player();
     private static QuestManager questManager = new QuestManager();
 
@@ -38,6 +43,8 @@ public final class Game {
         ConsoleManager.log(store.getConnections().get(0).getName());
         ConsoleManager.log(store.getConnections().get(0).getConnections().get(0).getName());
 
+        player.setLocation(store);
+
         questManager.addQuest(new MainQuest());
 
         gameLoop();
@@ -45,8 +52,14 @@ public final class Game {
 
     private static void gameLoop() {
         // inform user of surroundings and stats
-        
+        gameState = GameState.INFORM;
+        ConsoleManager.log(LogType.INFO, player.getLocation().getDescription());
+
         // prompt user for action (move locations, interact with object (object, character, enemy),  use item)
+        gameState = GameState.PROMPT;
+
+        String[] options = {"First option", "Second Option", "Third Option"};
+        promptUser("Please select an option", options);
 
         // IF move locations
             // check for move blockers, proceed to fight/interaction if there are
@@ -80,7 +93,7 @@ public final class Game {
 
     private static void endTurn() {
         if (player.getHealth() > 0 && !endGameFlag) {
-            gameLoop();
+            // gameLoop();
         }
     }
 
@@ -90,5 +103,29 @@ public final class Game {
             return;
         }
         endGameFlag = true;
+    }
+
+    private static int promptUser(String prompt, String[] options) {
+        ConsoleManager.log(LogType.PROMPT, prompt);
+        for (int i = 0; i < options.length; i++) {
+            ConsoleManager.log(LogType.PROMPT, ConsoleManager.TAB + (i+1) + ". " + options[i]);
+        }
+        ConsoleManager.newLine();
+
+        int ch;
+        while (true) {
+            InputChar c = Toolkit.readCharacter();
+            try {
+                ch = Integer.parseInt(c.toString()) - 1;
+            } catch(Exception e) {
+                continue;
+            }
+            if (ch + 1 > options.length || ch < 0) {
+                continue;
+            }
+            break;
+        }
+
+        return ch;
     }
 }

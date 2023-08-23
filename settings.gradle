@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'AdventureGame'
-include('AdventureGame');
+include('app');
