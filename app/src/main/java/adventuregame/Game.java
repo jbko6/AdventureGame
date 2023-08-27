@@ -34,7 +34,7 @@ public final class Game {
     }
 
     public static void startGame() {
-        Location store = new Location("stor")
+        Location store = new Location("store")
                             .addObject(new InteractableObject("test", "test"))
                             .addConnection(
                                 new Location("parkingLot")
