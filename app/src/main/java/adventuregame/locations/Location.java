@@ -25,6 +25,7 @@ public class Location {
         } catch (MissingResourceException e) {
             this.name = "";
             this.description = "";
+            System.err.println(resourceName + " resource bundle did not exist.");
         }
     }
 
