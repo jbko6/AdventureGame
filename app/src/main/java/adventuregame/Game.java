@@ -1,20 +1,24 @@
 package adventuregame;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.ResourceBundle;
+
 import adventuregame.console.ConsoleManager;
 import adventuregame.console.LogType;
-import adventuregame.items.Items;
-import adventuregame.items.Milk;
-import adventuregame.items.Poison;
 import adventuregame.locations.Location;
+import adventuregame.locations.objects.InteractableObject;
 import adventuregame.player.Player;
 import adventuregame.quests.MainQuest;
 import adventuregame.quests.QuestManager;
+import adventuregame.util.GameFlags;
 import adventuregame.util.GameState;
 import jcurses.system.InputChar;
 import jcurses.system.Toolkit;
 
 public final class Game {
     public static GameState gameState = GameState.NULL;
+    public static HashMap<GameFlags, Boolean> gameFlags = new HashMap<GameFlags, Boolean>();
 
     private static Player player = new Player();
     private static QuestManager questManager = new QuestManager();
@@ -30,18 +34,11 @@ public final class Game {
     }
 
     public static void startGame() {
-        ConsoleManager.log(LogType.INFO, "welcome! test");
-        player.getInventory().addItem(new Milk());
-        player.getInventory().addItem(new Milk());
-        ConsoleManager.log(LogType.INFO, player.getInventory().toString());
-        player.getInventory().addItem(new Poison());
-        player.getInventory().useItem(Items.POISON);
-        ConsoleManager.log(LogType.INFO, player.getInventory().toString());
-
-        Location store = new Location("Store", "The store")
-                            .addConnection(new Location("Parking Lot", "It's a parking lot for the store."));
-        ConsoleManager.log(store.getConnections().get(0).getName());
-        ConsoleManager.log(store.getConnections().get(0).getConnections().get(0).getName());
+        Location store = new Location("store")
+                            .addObject(new InteractableObject("test", "test"))
+                            .addConnection(
+                                new Location("parkingLot")
+                            );
 
         player.setLocation(store);
 
@@ -58,8 +55,22 @@ public final class Game {
         // prompt user for action (move locations, interact with object (object, character, enemy),  use item)
         gameState = GameState.PROMPT;
 
-        String[] options = {"First option", "Second Option", "Third Option"};
-        promptUser("Please select an option", options);
+        ResourceBundle flavorBundle = ResourceBundle.getBundle("localization.flavor.FlavorText");
+
+        ArrayList<String> options = new ArrayList<String>();
+        // add connections as action options
+        for (Location connection : player.getLocation().getConnections()) {
+            options.add(flavorBundle.getString("locationMovement") + connection.getName());
+        }
+        // add interactable objects to room
+        for (InteractableObject object : player.getLocation().getObjects()) {
+            // TODO: implement item names and stuff
+            options.add(flavorBundle.getString("interact") + "milk");
+        }
+        // inventory stuff
+        options.add("Manage your inventory or use an item");
+
+        promptUser(flavorBundle.getString("actionPrompt"), options);
 
         // IF move locations
             // check for move blockers, proceed to fight/interaction if there are
@@ -127,5 +138,10 @@ public final class Game {
         }
 
         return ch;
+    }
+
+    private static int promptUser(String prompt, ArrayList<String> options) {
+        String[] strArray = new String[options.size()];
+        return promptUser(prompt, options.toArray(strArray));
     }
 }

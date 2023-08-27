@@ -1,10 +1,10 @@
 package adventuregame.locations.objects;
 
-public class LocationObject {
+public class InteractableObject {
     protected final String name;
     protected final String description;
 
-    public LocationObject(String name, String description) {
+    public InteractableObject(String name, String description) {
         this.name = name;
         this.description = description;
     }
