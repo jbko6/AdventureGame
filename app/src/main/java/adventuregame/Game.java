@@ -66,7 +66,6 @@ public final class Game {
         }
         // add interactable objects to room
         for (InteractableObject object : player.getLocation().getObjects()) {
-            // TODO: implement object names and stuff
             options.add(new InteractActionOption(gameBundle.getString("interact") + object.getName(), object));
         }
         // inventory stuff
