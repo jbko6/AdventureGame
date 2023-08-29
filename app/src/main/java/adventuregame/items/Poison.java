@@ -6,12 +6,12 @@ import adventuregame.console.LogType;
 
 public class Poison extends Item {
     public Poison() {
-        super("Poison", "Often used in homicide. Don't drink it.");
+        super("poison");
     }
 
     @Override
     public boolean use() {
-        ConsoleManager.log(LogType.ACTION, "You drank the poison.");
+        ConsoleManager.log(LogType.ACTION, getLocalizedString("Use"));
         Game.getPlayer().damage(5, true);
         return true;
     }

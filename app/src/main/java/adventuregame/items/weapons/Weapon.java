@@ -7,8 +7,8 @@ public abstract class Weapon extends Item {
     protected final int baseDamage;
     protected final double critRate;
 
-    public Weapon(String name, String description, int baseDamage, double critRate) {
-        super(name, description);
+    public Weapon(String resourceName, int baseDamage, double critRate) {
+        super(resourceName);
 
         this.baseDamage = baseDamage;
         this.critRate = critRate;

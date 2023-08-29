@@ -1,36 +1,34 @@
 package adventuregame.locations;
 
 import java.util.ArrayList;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import javax.annotation.CheckForNull;
+
+import adventuregame.locations.blockers.Blocker;
 import adventuregame.locations.objects.InteractableObject;
+import adventuregame.util.Localization;
+import adventuregame.util.LocalizedObject;
 
-public class Location {
-    protected String name;
-    protected String description;
-    protected final ArrayList<Location> connections = new ArrayList<Location>();
-    protected final ArrayList<InteractableObject> objects = new ArrayList<InteractableObject>();
+public class Location extends LocalizedObject {
+    @CheckForNull
+    protected Blocker blocker;
 
-    public Location(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
+    protected final ArrayList<Location> CONNECTIONS = new ArrayList<Location>();
+    protected final ArrayList<InteractableObject> OBJECTS = new ArrayList<InteractableObject>();
 
     public Location(String resourceName) {
-        ResourceBundle locationsBundle = ResourceBundle.getBundle("localization.locations.Locations");
-        try {
-            this.name = locationsBundle.getString(resourceName + "Name");
-            this.description = locationsBundle.getString(resourceName + "Description");
-        } catch (MissingResourceException e) {
-            this.name = "";
-            this.description = "";
-            System.err.println(resourceName + " resource bundle did not exist.");
-        }
+        super(resourceName, Localization.getInstance().getLocationsBundle());
     }
 
+    public Location(String resourceName, Blocker blocker) {
+        this(resourceName);
+        this.blocker = blocker;
+    }
+
+    @Deprecated
     public Location() {
-        this("", "");
+        super("", "");
     }
 
     public Location setName(String name) {
@@ -43,6 +41,11 @@ public class Location {
         return this;
     }
 
+    public Location setBlocker(Blocker blocker) {
+        this.blocker = blocker;
+        return this;
+    }
+
     public String getName() {
         return name;
     }
@@ -51,8 +54,41 @@ public class Location {
         return description;
     }
 
+    public ArrayList<Location> getConnections() {
+        return CONNECTIONS;
+    }
+
+    public String getConnectionDescription(Location connection) {
+        ResourceBundle locationsBundle = Localization.getInstance().getLocationsBundle();
+
+        return locationsBundle.getString(this.RESOURCE_NAME + connection.RESOURCE_NAME + "ConnectionDescription");
+    }
+    
+    /**
+     * This method could return null!
+     * @see {@link #hasBlocker()} for null check
+     */
+    @CheckForNull
+    public Blocker getBlocker() {
+        return blocker;
+    }
+
+    public ArrayList<InteractableObject> getObjects() {
+        return OBJECTS;
+    }
+
+    public boolean hasBlocker() {
+        return !(blocker == null);
+    }
+
+    public boolean hasConnectionDescription(Location connection) {
+        ResourceBundle locationsBundle = Localization.getInstance().getLocationsBundle();
+
+        return locationsBundle.containsKey(this.RESOURCE_NAME + connection.RESOURCE_NAME + "ConnectionDescription");
+    }
+
     public Location addConnection(Location connection, boolean oneWay) {
-        this.connections.add(connection);
+        this.CONNECTIONS.add(connection);
         if (!oneWay && !connection.getConnections().contains(this)) {
             connection.addConnection(this);
         }
@@ -63,16 +99,8 @@ public class Location {
         return addConnection(connection, false);
     }
 
-    public ArrayList<Location> getConnections() {
-        return connections;
-    }
-
     public Location addObject(InteractableObject object) {
-        this.objects.add(object);
+        this.OBJECTS.add(object);
         return this;
-    }
-
-    public ArrayList<InteractableObject> getObjects() {
-        return objects;
     }
 }

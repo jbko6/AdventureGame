@@ -6,6 +6,7 @@ package adventuregame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.lang.reflect.Modifier;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,9 @@ class GameTest {
             try {
                 Items.valueOf(item.getSimpleName().toUpperCase());
             } catch (Exception e) {
-                fail("Item " + item.getSimpleName() + " wasn't registered");
+                if (!Modifier.isAbstract(item.getModifiers())) {
+                    fail("Item " + item.getSimpleName() + " wasn't registered");
+                }
             }
         }
     }
