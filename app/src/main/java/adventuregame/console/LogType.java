@@ -5,7 +5,8 @@ public enum LogType {
     QUEST("\u001B[32m"), // green
     INFO("\u001B[0m"), // white/default
     PROMPT("\u001B[33m"), // yellow
-    DAMAGE("\u001B[31m"); // red
+    DAMAGE("\u001B[31m"), // red
+    ERROR("\u001B[31m");
 
     private String color;
 

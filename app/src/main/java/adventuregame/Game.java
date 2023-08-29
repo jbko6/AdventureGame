@@ -11,6 +11,10 @@ import adventuregame.locations.objects.InteractableObject;
 import adventuregame.player.Player;
 import adventuregame.quests.MainQuest;
 import adventuregame.quests.QuestManager;
+import adventuregame.util.ActionOption;
+import adventuregame.util.ActionOption.MoveActionOption;
+import adventuregame.util.ActionOption.InteractActionOption;
+import adventuregame.util.ActionOption.InventoryActionOption;
 import adventuregame.util.GameFlags;
 import adventuregame.util.GameState;
 import jcurses.system.InputChar;
@@ -57,26 +61,29 @@ public final class Game {
 
         ResourceBundle flavorBundle = ResourceBundle.getBundle("localization.flavor.FlavorText");
 
-        ArrayList<String> options = new ArrayList<String>();
+        ArrayList<ActionOption> options = new ArrayList<ActionOption>();
         // add connections as action options
         for (Location connection : player.getLocation().getConnections()) {
-            options.add(flavorBundle.getString("locationMovement") + connection.getName());
+            options.add(new MoveActionOption(flavorBundle.getString("locationMovement") + connection.getName(), connection));
         }
         // add interactable objects to room
         for (InteractableObject object : player.getLocation().getObjects()) {
             // TODO: implement item names and stuff
-            options.add(flavorBundle.getString("interact") + "milk");
+            options.add(new InteractActionOption(flavorBundle.getString("interact") + "milk", object));
         }
         // inventory stuff
-        options.add("Manage your inventory or use an item");
+        options.add(new InventoryActionOption(flavorBundle.getString("inventoryCheck")));
 
-        promptUser(flavorBundle.getString("actionPrompt"), options);
+        ActionOption choosenOption = promptUser(flavorBundle.getString("actionPrompt"), options);
 
         // IF move locations
             // check for move blockers, proceed to fight/interaction if there are
             // if player cannot move, end turn
-        
-        // IF interact with object
+        if (choosenOption.getClass().equals(MoveActionOption.class)) {
+            
+        }
+
+        // IF interact with object 
             // IF object
                 // display text for object
                 // if additional prompts needed, display them
@@ -93,10 +100,16 @@ public final class Game {
                 // continue until fight complete
                 // display rewards text if there is reward
             // then update quests, end turn
-        
-            // IF use item
-                // use item
-                // update quests, end turn
+        if (choosenOption.getClass().equals(InteractActionOption.class)) {
+
+        }
+
+        // IF use item
+            // use item
+            // update quests, end turn
+        if (choosenOption.getClass().equals(InventoryActionOption.class)) {
+
+        }
 
         questManager.updateQuests();
         endTurn();
@@ -116,10 +129,10 @@ public final class Game {
         endGameFlag = true;
     }
 
-    private static int promptUser(String prompt, String[] options) {
+    private static ActionOption promptUser(String prompt, ActionOption[] options) {
         ConsoleManager.log(LogType.PROMPT, prompt);
         for (int i = 0; i < options.length; i++) {
-            ConsoleManager.log(LogType.PROMPT, ConsoleManager.TAB + (i+1) + ". " + options[i]);
+            ConsoleManager.log(LogType.PROMPT, ConsoleManager.TAB + (i+1) + ". " + options[i].actionDescription);
         }
         ConsoleManager.newLine();
 
@@ -137,11 +150,11 @@ public final class Game {
             break;
         }
 
-        return ch;
+        return options[ch];
     }
 
-    private static int promptUser(String prompt, ArrayList<String> options) {
-        String[] strArray = new String[options.size()];
+    private static ActionOption promptUser(String prompt, ArrayList<ActionOption> options) {
+        ActionOption[] strArray = new ActionOption[options.size()];
         return promptUser(prompt, options.toArray(strArray));
     }
 }

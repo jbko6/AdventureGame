@@ -12,6 +12,10 @@ public final class ConsoleManager {
         log(LogType.INFO, msg);
     }
 
+    public static void error(String msg) {
+        System.out.println(LogType.ERROR + msg + ANSI_RESET);
+    }
+
     public static void newLine() {
         System.out.println();
     }
