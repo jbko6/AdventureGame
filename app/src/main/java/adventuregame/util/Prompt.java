@@ -28,6 +28,8 @@ public final class Prompt {
             break;
         }
 
+        ConsoleManager.newLine();
+
         return options[ch];
     }
 

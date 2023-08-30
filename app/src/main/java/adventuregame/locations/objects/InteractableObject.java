@@ -3,7 +3,7 @@ package adventuregame.locations.objects;
 import adventuregame.util.Localization;
 import adventuregame.util.LocalizedObject;
 
-public class InteractableObject extends LocalizedObject {
+public abstract class InteractableObject extends LocalizedObject {
 
     public InteractableObject(String resourceName) {
         super(resourceName, Localization.getInstance().getInteractablesBundle());
@@ -21,4 +21,6 @@ public class InteractableObject extends LocalizedObject {
     public String getDescription() {
         return description;
     }
+
+    public abstract void interact();
 }

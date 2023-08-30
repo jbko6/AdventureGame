@@ -3,7 +3,7 @@ package adventuregame.util;
 import adventuregame.locations.Location;
 import adventuregame.locations.objects.InteractableObject;
 
-public abstract class ActionOption {
+public class ActionOption {
     public String actionDescription;
 
     public ActionOption(String actionDescription) {

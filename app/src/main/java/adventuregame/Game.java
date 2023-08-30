@@ -9,7 +9,9 @@ import adventuregame.console.LogType;
 import adventuregame.items.Items;
 import adventuregame.locations.Location;
 import adventuregame.locations.blockers.ItemBlocker;
+import adventuregame.locations.objects.DairyAisle;
 import adventuregame.locations.objects.InteractableObject;
+import adventuregame.locations.objects.characters.enemies.Enemy;
 import adventuregame.player.Player;
 import adventuregame.quests.MainQuest;
 import adventuregame.quests.QuestManager;
@@ -34,7 +36,7 @@ public final class Game {
 
     public static void startGame() {
         Location store = new Location("store")
-                            .addObject(new InteractableObject("dairyAisle"))
+                            .addObject(new DairyAisle())
                             .addConnection(
                                 new Location("parkingLot")
                                     .setBlocker(new ItemBlocker("obtainMilk", Items.MILK))
@@ -81,12 +83,10 @@ public final class Game {
 
             // check for blocker on the location
             if(moveAction.location.hasBlocker() && !moveAction.location.getBlocker().isDisabled()) {
-                ConsoleManager.newLine();
                 // if unable to move, log to the user why
                 ConsoleManager.log(LogType.INFO, moveAction.location.getBlocker().getDescription());
             } else {
                 if (player.getLocation().hasConnectionDescription(moveAction.location)) {
-                    ConsoleManager.newLine();
                     ConsoleManager.log(LogType.INFO, player.getLocation().getConnectionDescription(moveAction.location));
                 }
 
@@ -112,7 +112,9 @@ public final class Game {
                 // display rewards text if there is reward
             // then update quests, end turn
         if (choosenOption.getClass().equals(InteractActionOption.class)) {
+            InteractActionOption interactAction = (InteractActionOption) choosenOption;
 
+            interactAction.object.interact();
         }
 
         // IF use item

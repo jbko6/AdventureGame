@@ -7,4 +7,9 @@ public class Character extends InteractableObject {
     public Character(String resourceName) {
         super(resourceName);
     }
+
+    @Override
+    public void interact() {
+        
+    }
 }
